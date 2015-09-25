@@ -16,7 +16,6 @@ import nested from 'postcss-nested';
 import vars from 'postcss-simple-vars';
 import extend from 'postcss-simple-extend';
 import cssnano from 'cssnano';
-import htmlReplace from 'gulp-html-replace';
 import image from 'gulp-image';
 import runSequence from 'run-sequence';
 
@@ -25,13 +24,13 @@ const paths = {
   srcJsx: 'src/Index.js',
   srcCss: 'src/**/*.css',
   srcImg: 'src/images/**',
-  dist: 'dist',
-  distJs: 'dist/js',
-  distImg: 'dist/images'
+  dist: 'public/dist',
+  distJs: 'public/dist/js',
+  distImg: 'public/dist/images'
 };
 
 gulp.task('clean', cb => {
-  rimraf('dist', cb);
+  rimraf('public/dist', cb);
 });
 
 gulp.task('browserSync', () => {
@@ -79,12 +78,6 @@ gulp.task('styles', () => {
   .pipe(reload({stream: true}));
 });
 
-gulp.task('htmlReplace', () => {
-  gulp.src('index.html')
-  .pipe(htmlReplace({css: 'styles/main.css', js: 'js/app.js'}))
-  .pipe(gulp.dest(paths.dist));
-});
-
 gulp.task('images', () => {
   gulp.src(paths.srcImg)
   .pipe(image())
@@ -108,5 +101,5 @@ gulp.task('watch', cb => {
 
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'images'], cb);
+  runSequence('clean', ['browserify', 'styles', 'images'], cb);
 });
