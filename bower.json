@@ -1,0 +1,18 @@
+{
+  "name": "facebook-api.local",
+  "homepage": "https://github.com/thecodingwhale/facebook-api",
+  "authors": [
+    "aldren.terante <me@thecodingwhale.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}

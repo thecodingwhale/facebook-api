@@ -35,10 +35,9 @@ gulp.task('clean', cb => {
 });
 
 gulp.task('browserSync', () => {
-  browserSync({
-    server: {
-      baseDir: './'
-    }
+  browserSync(['./public/**/*.*'], {
+    proxy: 'facebook-api.local',
+    port: 3002
   });
 });
 
