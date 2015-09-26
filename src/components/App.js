@@ -16,6 +16,7 @@ export default React.createClass({
           <h1>React Starterify {version}</h1>
           <Link to="/about">About</Link>
           <Link to="/poweredby">Powered by</Link>
+          <Link to="/posts">Posts</Link>
         </header>
         <section>
           {this.props.children || 'Welcome to React Starterify'}

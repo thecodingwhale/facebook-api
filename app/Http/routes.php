@@ -116,5 +116,22 @@ Route::get('/facebook/callback', function(SammyK\LaravelFacebookSdk\LaravelFaceb
     // // Log the user into Laravel
     // Auth::login($user);
 
-    return redirect('/')->with('message', 'Successfully logged in with Facebook');
+    return redirect('/#/');
+});
+
+Route::get('/users', function () {
+    $userLists = [[
+        'name' => 'aldren reales terante',
+        'role' => 'father'
+    ],[
+        'name' => 'marlissa perlas terante',
+        'role' => 'mother'
+    ],[
+        'name' => 'jax perlas terante',
+        'role' => 'eldest son'
+    ],[
+        'name' => 'zoe perlas terante',
+        'role' => 'youngest daughter'
+    ]];
+    return response()->json($userLists);
 });
