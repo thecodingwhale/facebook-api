@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "post-install": "bower-installer && gulp build && gulp watch",
     "test": "mocha --reporter nyan --compilers js:babel/register --recursive"
   },
   "devDependencies": {
