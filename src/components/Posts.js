@@ -5,12 +5,7 @@ import Promise from 'promise';
 export default React.createClass({
     getInitialState() {
         return {
-            posts: [{
-                id: 0,
-                title: "Title",
-                description: "Description",
-                date: "Date"
-            }]
+            posts: []
         };
     },
     componentDidMount() {
@@ -36,13 +31,24 @@ export default React.createClass({
                 <div className="post-description">Description: <em>{post.description}</em></div>
                 <div className="post-date">{post.date}</div>
             </div>
-        });
-        return (
-            <div>
-                <div id="ajax-spinner" className="well">
-                    <i className="fa fa-spinner fa-spin fa-2x"></i> Getting All Posts
+        });        
+
+        var classPosts = 'posts hide';
+        if (Object.keys(this.state.posts).length > 1) {
+            classPosts += 'posts';
+        }        
+
+        var classWell = 'well well-sm';
+        if (Object.keys(this.state.posts).length > 1) {
+            classWell += 'well well-sm hide';
+        }      
+
+        return (            
+            <div>                
+                <div id="ajax-spinner" className={classWell}>
+                    <i className="fa fa-spinner fa-spin fa-lg"></i> Getting All Posts
                 </div>
-                <div className="posts">
+                <div className={classPosts}>
                     {postList}
                 </div>
             </div>
