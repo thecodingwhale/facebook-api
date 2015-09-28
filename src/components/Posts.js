@@ -5,22 +5,24 @@ import Promise from 'promise';
 export default React.createClass({
     getInitialState() {
         return {
-            users: [{
-                name: "Name",
-                role: "Role"
+            posts: [{
+                id: 0,
+                title: "Title",
+                description: "Description",
+                date: "Date"
             }]
         };
     },
     componentDidMount() {
         let promise = new Promise((resolve, reject) => {
             request
-               .get('/users')
+               .get('/facebook/posts')
                .end((err, res) => {
                     if (err) {
                         reject(err);
                     } else {
                         this.setState({
-                            users: res.body
+                            posts: res.body
                         });
                         resolve(res);
                     }
@@ -28,15 +30,16 @@ export default React.createClass({
         });
     },
     render() {
-        var userList = this.state.users.map((user) => {
-            return<li>
-                Name: {user.name} <br />
-                Role: {user.role}
-            </li>
+        var postList = this.state.posts.map((post) => {
+            return<div className="well post" key={post.id}>
+                <div className="post-title">Title: <strong>{post.title}</strong></div>
+                <div className="post-description">Description: <em>{post.description}</em></div>
+                <div className="post-date">{post.date}</div>
+            </div>
         });
         return (
-            <div className="container">
-                <ul>{userList}</ul>
+            <div className="posts">
+                {postList}
             </div>
         );
     }

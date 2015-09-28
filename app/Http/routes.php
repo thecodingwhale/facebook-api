@@ -33,10 +33,16 @@ Route::get('/facebook/posts', function(SammyK\LaravelFacebookSdk\LaravelFacebook
             }
             $postId = $post['id'];
             if (strpos($title,'[grab]') !== false) {
-                $response = $fb->get('1892530984305640_1896491710576234?fields=' . $requiredPostFields);
+                $response = $fb->get($postId . '?fields=' . $requiredPostFields);
                 $getPost = $response->getGraphNode()->asArray();
-                $grabPosts[] = $getPost;
-            }
+                // $grabPosts[] = $getPost;
+                $grabPosts[] = [
+                    'id'          => $getPost['id'],
+                    'title'       => $getPost['message'],
+                    'description' => (isset($getPost['description'])) ? $getPost['description'] : 'No Description',
+                    'date'        => date_format($getPost['created_time'], "(D) M d, Y")
+                ];
+            }           
         }
         return response()->json($grabPosts);
     } else {
@@ -117,21 +123,4 @@ Route::get('/facebook/callback', function(SammyK\LaravelFacebookSdk\LaravelFaceb
     // Auth::login($user);
 
     return redirect('/#/');
-});
-
-Route::get('/users', function () {
-    $userLists = [[
-        'name' => 'aldren reales terante',
-        'role' => 'father'
-    ],[
-        'name' => 'marlissa perlas terante',
-        'role' => 'mother'
-    ],[
-        'name' => 'jax perlas terante',
-        'role' => 'eldest son'
-    ],[
-        'name' => 'zoe perlas terante',
-        'role' => 'youngest daughter'
-    ]];
-    return response()->json($userLists);
 });
