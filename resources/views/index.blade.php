@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Laravel + Facebook API</title>
-    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">    
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/styles/main.css') }}">
 </head>
 <body>

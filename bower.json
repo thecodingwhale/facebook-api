@@ -2,23 +2,25 @@
     "name": "facebook-api.local",
     "homepage": "https://github.com/thecodingwhale/facebook-api",
     "authors": [
-        "aldren.terante <me@thecodingwhale.com>"
+    "aldren.terante <me@thecodingwhale.com>"
     ],
     "license": "MIT",
     "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
     ],
     "devDependencies": {
-        "bootstrap": "~3.3.5"
+        "bootstrap": "~3.3.5",
+        "font-awesome": "~4.4.0"
     },
-    "install" : {
-        "path" : "public/vendor",
-        "sources" : {
-            "bootstrap" : "bower_components/bootstrap/dist/**"
+    "install": {
+        "path": "public/vendor",
+        "sources": {
+            "bootstrap": "bower_components/bootstrap/dist/**",
+            "font-awesome": "bower_components/font-awesome/**"
         }
     }
 }

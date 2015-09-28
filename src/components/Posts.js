@@ -38,8 +38,13 @@ export default React.createClass({
             </div>
         });
         return (
-            <div className="posts">
-                {postList}
+            <div>
+                <div id="ajax-spinner" className="well">
+                    <i className="fa fa-spinner fa-spin fa-2x"></i> Getting All Posts
+                </div>
+                <div className="posts">
+                    {postList}
+                </div>
             </div>
         );
     }
