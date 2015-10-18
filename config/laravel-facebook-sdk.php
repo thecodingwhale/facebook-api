@@ -20,7 +20,7 @@ return [
     'facebook_config' => [
         'app_id' => env('FACEBOOK_APP_ID'),
         'app_secret' => env('FACEBOOK_APP_SECRET'),
-        'default_graph_version' => 'v2.4',
+        'default_graph_version' => 'v2.5',
         //'enable_beta_mode' => true,
         //'http_client_handler' => 'guzzle',
     ],
@@ -45,5 +45,5 @@ return [
      * The default endpoint that Facebook will redirect to after
      * an authentication attempt.
      */
-    'default_redirect_uri' => '/facebook/callback',
+    'default_redirect_uri' => env('FACEBOOK_REDIRECT_URI'),
     ];

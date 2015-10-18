@@ -11,7 +11,7 @@ export default React.createClass({
     componentDidMount() {
         let promise = new Promise((resolve, reject) => {
             request
-               .get('/facebook/posts')
+               .get('/post/all')
                .end((err, res) => {
                     if (err) {
                         reject(err);
@@ -31,20 +31,20 @@ export default React.createClass({
                 <div className="post-description">Description: <em>{post.description}</em></div>
                 <div className="post-date">{post.date}</div>
             </div>
-        });        
+        });
 
         var classPosts = 'posts hide';
         if (Object.keys(this.state.posts).length > 1) {
             classPosts += 'posts';
-        }        
+        }
 
         var classWell = 'well well-sm';
         if (Object.keys(this.state.posts).length > 1) {
             classWell += 'well well-sm hide';
-        }      
+        }
 
-        return (            
-            <div>                
+        return (
+            <div>
                 <div id="ajax-spinner" className={classWell}>
                     <i className="fa fa-spinner fa-spin fa-lg"></i> Getting All Posts
                 </div>
