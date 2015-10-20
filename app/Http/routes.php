@@ -10,7 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function () {
     return view('index');
 });
@@ -22,4 +21,5 @@ Route::group(['prefix' => 'user'], function () {
 
 Route::group(['prefix' => 'post'], function () {
     Route::get('all', 'Post\PostController@all');
+    Route::get('getPosts/{page?}', 'Post\PostController@getPosts');
 });

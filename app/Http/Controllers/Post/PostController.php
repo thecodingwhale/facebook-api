@@ -26,4 +26,9 @@ class PostController extends Controller
             return redirect('/');
         }
     }
+
+    public function getPosts($page = 1) {
+        $posts = $this->postService->getPosts($page);
+        return response()->json($posts);
+    }
 }

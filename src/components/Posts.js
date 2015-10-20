@@ -11,7 +11,7 @@ export default React.createClass({
     componentDidMount() {
         let promise = new Promise((resolve, reject) => {
             request
-               .get('/post/all')
+               .get('/post/getPosts/11')
                .end((err, res) => {
                     if (err) {
                         reject(err);
@@ -26,7 +26,8 @@ export default React.createClass({
     },
     render() {
         var postList = this.state.posts.map((post) => {
-            return<div className="well post" key={post.id}>
+            return<div className="well post" key={post.post_id}>
+                <div className="post-title">Id: <strong>{post.id}</strong></div>
                 <div className="post-title">Title: <strong>{post.title}</strong></div>
                 <div className="post-description">Description: <em>{post.description}</em></div>
                 <div className="post-date">{post.date}</div>

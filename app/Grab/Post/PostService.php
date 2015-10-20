@@ -19,7 +19,7 @@ class PostService extends BaseService {
         parent::__construct();
         $this->facebook = $facebook;
         $this->postConfig = $postConfig;
-        $this->facebook->setDefaultAccessToken(session('fb_user_access_token'));
+        // $this->facebook->setDefaultAccessToken(session('fb_user_access_token'));
     }
 
     public function get() {
@@ -55,6 +55,32 @@ class PostService extends BaseService {
             }
         }
         return $grabPosts;
+    }
+
+
+    public function getPosts($page) {
+        $faker = \Faker\Factory::create();
+        $getAllPosts = [];
+        $limit = config('grab.post.limit');
+        $totalPosts = 100;
+
+
+        $end = $page * $limit - 1;
+        $start = ($end - $limit) + 1;
+
+        for ($i=$start; $i < $end + 1; $i++) {
+            $date = $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now')->format("(D) M d, Y");
+            $getAllPosts[] = [
+                'id'          => $i,
+                'post_id'     => $faker->randomNumber(9),
+                'title'       => $faker->sentence(6),
+                'description' => $faker->text(100),
+                'date'        => $date
+            ];
+        }
+
+        return $getAllPosts;
+
     }
 
 }
