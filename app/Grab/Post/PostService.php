@@ -64,21 +64,21 @@ class PostService extends BaseService {
         $limit = config('grab.post.limit');
         $totalPosts = 100;
 
+        $start = $totalPosts - ($limit * $page) + $limit;
+        $end = $totalPosts - ($limit * $page) + 1;
 
-        $end = $page * $limit - 1;
-        $start = ($end - $limit) + 1;
-
-        for ($i=$start; $i < $end + 1; $i++) {
-            $date = $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now')->format("(D) M d, Y");
-            $getAllPosts[] = [
-                'id'          => $i,
-                'post_id'     => $faker->randomNumber(9),
-                'title'       => $faker->sentence(6),
-                'description' => $faker->text(100),
-                'date'        => $date
-            ];
+        if ($totalPosts >= ($limit * $page)) {
+            for ($i = $start; $i >= $end; $i--) {
+                $date = $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now')->format("(D) M d, Y");
+                $getAllPosts[] = [
+                    'id'          => $i,
+                    'post_id'     => $faker->randomNumber(9),
+                    'title'       => $faker->sentence(6),
+                    'description' => $faker->text(100),
+                    'date'        => $date
+                ];
+            }
         }
-
         return $getAllPosts;
 
     }
