@@ -7,10 +7,10 @@ var ListItem = React.createClass({
     render() {
         var post = this.props.post;
         return <div className="well post">
-            <div className="post-id">Id: <strong>{post.id}</strong></div>
-            <div className="post-title">Title: <strong>{post.title}</strong></div>
-            <div className="post-description">Description: <em>{post.description}</em></div>
-            <div className="post-date">{post.date}</div>
+            <div className="post-message">{post.message}</div>
+            <div className="post-description">{post.description}</div>
+            <div className="post-link">{post.link}</div>
+            <div className="post-created-time">{post.created_time}</div>
         </div>;
     }
 });
@@ -56,7 +56,7 @@ export default React.createClass({
     prepareListPost(posts) {
         var elements = [];
         posts.map((post) => {
-            elements.push(<ListItem key={post.post_id} post={post}/>)
+            elements.push(<ListItem key={post.id} post={post}/>)
         });
         return elements;
     },
@@ -71,7 +71,7 @@ export default React.createClass({
     render() {
         return <Infinite    elementHeight={160}
                             useWindowAsScrollContainer={true}
-                            infiniteLoadBeginBottomOffset={200}
+                            infiniteLoadBeginBottomOffset={50}
                             onInfiniteLoad={this.handleInfiniteLoad}
                             loadingSpinnerDelegate={this.ajaxLoader()}
                             isInfiniteLoading={this.state.isInfiniteLoading}

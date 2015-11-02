@@ -19,67 +19,81 @@ class PostService extends BaseService {
         parent::__construct();
         $this->facebook = $facebook;
         $this->postConfig = $postConfig;
-        // $this->facebook->setDefaultAccessToken(session('fb_user_access_token'));
-    }
-
-    public function get() {
-        $feed = $this->facebook->get('/me/feed' . $this->postConfig->getConfig());
-        return $feed->getGraphEdge();
+        $this->facebook->setDefaultAccessToken(session('fb_user_access_token'));
     }
 
     public function all() {
-        $response = $this->get();
-        $posts = $response->asArray();
-            echo '<pre>';
-            var_dump($posts);
-            exit();
-        $grabPosts = [];
-        $requiredPostFields = 'id,caption,description,created_time,link,message,picture,source,story,story_tags,type,updated_time';
-        foreach ($posts as $key => $post) {
+        $feeds = $this->facebook->get('/me/feed' . '?limit=10fields=id');
+        $feeds = $feeds->getGraphEdge();
+        $rawPosts = $feeds->asArray();
+        // $params = 'id,caption,description,created_time,link,message,picture,source,story,story_tags,type,updated_time';
+        $params = 'id,caption,description,created_time,link,message,source,updated_time';
+        foreach ($rawPosts as $post) {
             if (isset($post['story'])) {
                 $title = $post['story'];
             }
             if (isset($post['message'])) {
                 $title = $post['message'];
             }
-            $postId = $post['id'];
             if (strpos($title,'[grab]') !== false) {
-                $response = $this->facebook->get($postId . '?fields=' . $requiredPostFields);
-                $getPost = $response->getGraphNode()->asArray();
-                $grabPosts[] = [
-                    'id'          => $getPost['id'],
-                    'title'       => $getPost['message'],
-                    'description' => (isset($getPost['description'])) ? $getPost['description'] : 'No Description',
-                    'date'        => date_format($getPost['created_time'], "(D) M d, Y")
+                $id = $post['id'];
+                $fields = '?fields=' . $params;
+                $relative_url = $id . $fields;
+
+                $filteredPosts[] = [
+                    'method' => 'GET',
+                    'relative_url' => $relative_url
                 ];
             }
         }
-        return $grabPosts;
+
+        $posts = $this->facebook->post('?batch=' . urlencode(json_encode($filteredPosts)));
+        $posts = $posts->getGraphObject()->asArray();
+
+        foreach ($posts as $key => $value) {
+            $body = json_decode($posts[$key]['body'], true);
+            $body['created_time'] = date('Y-m-d', strtotime($body['created_time']));
+            $body['updated_time'] = date('Y-m-d', strtotime($body['updated_time']));
+            $grabPosts[] = $body;
+        }
+
     }
 
 
     public function getPosts($page) {
-        $faker = \Faker\Factory::create();
-        $getAllPosts = [];
-        $limit = config('grab.post.limit');
-        $totalPosts = 100;
+        $feeds = $this->facebook->get('/me/feed' . '?limit=10fields=id');
+        $feeds = $feeds->getGraphEdge();
+        $rawPosts = $feeds->asArray();
+        $params = 'id,description,created_time,link,message,source';
+        foreach ($rawPosts as $post) {
+            if (isset($post['story'])) {
+                $title = $post['story'];
+            }
+            if (isset($post['message'])) {
+                $title = $post['message'];
+            }
+            if (strpos($title,'[grab]') !== false) {
+                $id = $post['id'];
+                $fields = '?fields=' . $params;
+                $relative_url = $id . $fields;
 
-        $start = $totalPosts - ($limit * $page) + $limit;
-        $end = $totalPosts - ($limit * $page) + 1;
-
-        if ($totalPosts >= ($limit * $page)) {
-            for ($i = $start; $i >= $end; $i--) {
-                $date = $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now')->format("(D) M d, Y");
-                $getAllPosts[] = [
-                    'id'          => $i,
-                    'post_id'     => $faker->randomNumber(9),
-                    'title'       => $faker->sentence(6),
-                    'description' => $faker->text(100),
-                    'date'        => $date
+                $filteredPosts[] = [
+                    'method' => 'GET',
+                    'relative_url' => $relative_url
                 ];
             }
         }
-        return $getAllPosts;
+
+        $posts = $this->facebook->post('?batch=' . urlencode(json_encode($filteredPosts)));
+        $posts = $posts->getGraphObject()->asArray();
+
+        foreach ($posts as $key => $value) {
+            $body = json_decode($posts[$key]['body'], true);
+            $body['created_time'] = date('Y-m-d', strtotime($body['created_time']));
+            $grabPosts[] = $body;
+        }
+
+        return $grabPosts;
 
     }
 
