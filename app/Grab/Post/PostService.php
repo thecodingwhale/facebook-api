@@ -61,7 +61,8 @@ class PostService extends BaseService {
 
 
     public function getPosts($page) {
-        $feeds = $this->facebook->get('/me/feed' . '?limit=10fields=id');
+        $offset = $page - 1;
+        $feeds = $this->facebook->get('/me/feed' . '?limit=10&offset=' . $offset . '&fields=id,story,message');
         $feeds = $feeds->getGraphEdge();
         $rawPosts = $feeds->asArray();
         $params = 'id,description,created_time,link,message,source';
@@ -90,6 +91,9 @@ class PostService extends BaseService {
         foreach ($posts as $key => $value) {
             $body = json_decode($posts[$key]['body'], true);
             $body['created_time'] = date('Y-m-d', strtotime($body['created_time']));
+            if (isset($body['description'])) {
+                $body['description'] = substr($body['description'], 0, 100) . '...';
+            }
             $grabPosts[] = $body;
         }
 
